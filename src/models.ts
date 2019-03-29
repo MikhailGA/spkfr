@@ -14,3 +14,12 @@ export const sharks = createModel({
     },
   },
 });
+
+export type TokenState = string;
+
+export const token = createModel({
+  state: '',
+  reducers: {
+    setToken: (state: TokenState, payload: string): TokenState => payload,
+  },
+});

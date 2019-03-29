@@ -1,27 +1,42 @@
 import * as React from 'react';
-import axios from 'axios';
 import { FormGroup, Form, Label, Input, Button } from 'reactstrap';
 import { withRouter, RouteComponentProps } from 'react-router';
 import { AuthResult } from 'src/interfaces';
+import { AxiosInstance } from 'axios';
+import { iRootState, Dispatch } from 'src/store';
+import { connect } from 'react-redux';
+
+const mapState = (state: iRootState) => ({
+  token: state.token,
+});
+
+const mapDispatch = (dispatch: Dispatch) => ({
+  setToken: (token: string) => dispatch.token.setToken(token),
+});
+
+type connectedProps = ReturnType<typeof mapState> & ReturnType<typeof mapDispatch>;
 
 interface PathParamsType {
 }
 
 interface SelfProps {
+  restClient: AxiosInstance;
 }
 
 // Your component own properties
-type PropsType = RouteComponentProps<PathParamsType> & SelfProps;
+type PropsType = RouteComponentProps<PathParamsType> & SelfProps & connectedProps;
 
 interface AuthenticationFormState {
   phone: string;
   password: string;
+  remember: boolean;
 }
 
 class AuthenticationForm extends React.Component<PropsType, AuthenticationFormState> {
   public state = {
     phone: '',
     password: '',
+    remember: false,
   };
   public render() {
     return (
@@ -52,23 +67,30 @@ class AuthenticationForm extends React.Component<PropsType, AuthenticationFormSt
           />
         </FormGroup>
         <Button onClick={this.getToken}>Логин</Button>
+        <input type="checkbox" name="remember" checked={this.state.remember} onChange={() => this.setState({ remember: !this.state.remember })}/>
       </Form>
     );
   }
 
   private getToken = async () => {
-    const result = await axios.post<AuthResult>(
-      'https://api-applicant.spkfr.ru/v1/account/login',
+    const result = await this.props.restClient.post<AuthResult>(
+      '/v1/account/login',
       { phone: this.state.phone, password: this.state.password },
       { validateStatus: () => true });
 
     if (result.status === 200) {
-      console.log('TCL: AuthenticationForm -> privategetToken -> result.data.profile', result.data.profile);
-      this.props.history.push('/app');
+      // console.log('TCL: AuthenticationForm -> privategetToken -> result.data.profile', result.data.profile);
+      // this.props.setToken(result.data.token);
+      if (this.state.remember) {
+        window.localStorage.setItem('token', result.data.token);
+      } else {
+        window.sessionStorage.setItem('token', result.data.token);
+      }
+      this.props.history.push('/');
       return;
     }
     alert('Неверный логин или пароль');
   }
 }
 
-export default withRouter(AuthenticationForm);
+export default withRouter(connect(mapState, mapDispatch)(AuthenticationForm));

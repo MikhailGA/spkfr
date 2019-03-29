@@ -1,0 +1,38 @@
+.form-signin {
+  width: 100%;
+  max-width: 330px;
+  padding: 15px;
+  margin: 0 auto;
+}
+
+.app {
+  display: grid;
+  grid-template-columns: 200px auto;
+  grid-template-rows: 30px auto;
+  grid-template-areas: 
+    "user-profile header"
+    "side-bar content";
+
+  height: 100vh;
+
+  .user-profile {
+    grid-area: user-profile;
+    background-color: gray;
+  }
+
+  .header {
+    grid-area: header;
+    background-color: lightcyan;
+  }
+
+  .side-bar {
+    grid-area: side-bar;
+    background-color: lightgray;
+  }
+
+  .content {
+    grid-area: content;
+    background-color: lightslategray;
+  }
+}
+
