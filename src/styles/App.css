@@ -4,21 +4,35 @@
   padding: 15px;
   margin: 0 auto; }
 
+.paginationCustom {
+  justify-content: center; }
+
 .app {
   display: grid;
   grid-template-columns: 200px auto;
-  grid-template-rows: 30px auto;
+  grid-template-rows: 50px auto;
   grid-template-areas: "user-profile header" "side-bar content";
   height: 100vh; }
-  .app .user-profile {
-    grid-area: user-profile;
-    background-color: gray; }
-  .app .header {
-    grid-area: header;
-    background-color: lightcyan; }
-  .app .side-bar {
-    grid-area: side-bar;
-    background-color: lightgray; }
-  .app .content {
-    grid-area: content;
-    background-color: lightslategray; }
+
+.app .user-profile {
+  grid-area: user-profile;
+  background-color: gray; }
+
+.app .header {
+  grid-area: header;
+  background-color: lightcyan;
+  display: flex;
+  align-self: center;
+  justify-content: flex-end; }
+
+.app .side-bar {
+  grid-area: side-bar;
+  background-color: lightgray; }
+
+.app .content {
+  grid-area: content;
+  position: relative;
+  background-color: lightslategray;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; }

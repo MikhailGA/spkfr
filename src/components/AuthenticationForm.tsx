@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { FormGroup, Form, Label, Input, Button } from 'reactstrap';
+import { FormGroup, Form, Label, Input, Button, InputGroupAddon } from 'reactstrap';
 import { withRouter, RouteComponentProps } from 'react-router';
-import { AuthResult } from 'src/interfaces';
+import { AuthenticationResponseType } from 'src/interfaces';
 import { AxiosInstance } from 'axios';
 import { iRootState, Dispatch } from 'src/store';
 import { connect } from 'react-redux';
+import InputGroup from 'reactstrap/lib/InputGroup';
 
 const mapState = (state: iRootState) => ({
   token: state.token,
@@ -30,6 +31,7 @@ interface AuthenticationFormState {
   phone: string;
   password: string;
   remember: boolean;
+  phoneValid: boolean;
 }
 
 class AuthenticationForm extends React.Component<PropsType, AuthenticationFormState> {
@@ -37,22 +39,30 @@ class AuthenticationForm extends React.Component<PropsType, AuthenticationFormSt
     phone: '',
     password: '',
     remember: false,
+    phoneValid: true,
   };
   public render() {
     return (
-      <Form className="form-signin">
-        <h1 className="h3 mb-3 font-weight-normal">Please sign in</h1>
+      <Form onSubmit={this.logIn} className="form-signin">
+        <div className="text-center mb-4">
+          <h1 className="h3 mb-3 font-weight-normal">Please sign in</h1>
+        </div>
         <FormGroup>
           <Label for="userPhone">Имя</Label>
-          <Input
-            className="form-control"
-            type="text"
-            name="phone"
-            id="userPhone"
-            placeholder="Введите имя пользователя"
-            value={this.state.phone}
-            onChange={(event: React.FormEvent<HTMLInputElement>) => this.setState({ phone: event.currentTarget.value })}
-          />
+          <InputGroup>
+            <InputGroupAddon addonType="prepend">+7</InputGroupAddon>
+            <Input
+              className="form-control"
+              type="text"
+              name="phone"
+              id="userPhone"
+              placeholder="9205530907"
+              value={this.state.phone}
+              onChange={this.onChangePhone}
+              valid={this.state.phoneValid && (this.state.phone.length > 0)}
+              invalid={!this.state.phoneValid}
+            />
+          </InputGroup>
         </FormGroup>
         <FormGroup>
           <Label for="userPassword">Пароль</Label>
@@ -66,21 +76,36 @@ class AuthenticationForm extends React.Component<PropsType, AuthenticationFormSt
             onChange={(event: React.FormEvent<HTMLInputElement>) => this.setState({ password: event.currentTarget.value })}
           />
         </FormGroup>
-        <Button onClick={this.getToken}>Логин</Button>
-        <input type="checkbox" name="remember" checked={this.state.remember} onChange={() => this.setState({ remember: !this.state.remember })}/>
+        <Button className="mb-2" block={true}>Логин</Button>
+        <Label check>
+            <input type="checkbox" checked={this.state.remember} onChange={() => this.setState({ remember: !this.state.remember })}/>{' '}
+            Запомни меня
+        </Label>
       </Form>
     );
   }
 
-  private getToken = async () => {
-    const result = await this.props.restClient.post<AuthResult>(
+  private onChangePhone = (event: React.FormEvent<HTMLInputElement>) => {
+    const regExp = /^([0-9]){10}$/;
+    if (regExp.test(event.currentTarget.value)) {
+      this.setState({ phoneValid: true });
+    } else {
+      this.setState({ phoneValid: false });
+    }
+    this.setState({ phone: event.currentTarget.value });
+  }
+
+  private logIn = async (event: React.FormEvent) => {
+    event.preventDefault();
+    if (!this.state.phoneValid || this.state.password.length === 0) {
+      alert('Вы ввели некорректные данные!');
+      return;
+    }
+    const result = await this.props.restClient.post<AuthenticationResponseType>(
       '/v1/account/login',
-      { phone: this.state.phone, password: this.state.password },
-      { validateStatus: () => true });
+      { phone: this.state.phone, password: this.state.password });
 
     if (result.status === 200) {
-      // console.log('TCL: AuthenticationForm -> privategetToken -> result.data.profile', result.data.profile);
-      // this.props.setToken(result.data.token);
       if (this.state.remember) {
         window.localStorage.setItem('token', result.data.token);
       } else {

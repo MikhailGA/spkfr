@@ -1,25 +1,18 @@
 import * as React from 'react';
 import { Profile } from '../interfaces';
-import { Optional } from 'typescript-optional';
+import * as moment from 'moment';
 
 interface UserProfileProps {
-  profile: Optional<Profile>;
+  profile: Profile;
 }
 
 const UserProfile = (props: UserProfileProps) => (
   <ul>
-    {props.profile.matches({
-      present: p => (
-        <>
-          <li>{p.firstName}</li>
-          <li>{p.lastName}</li>
-          <li>{p.email}</li>
-          <li>{p.birthDate}</li>
-          <li>{p.phone}</li>
-        </>
-      ),
-      empty: () => null,
-    })}
+    <li>{props.profile.firstName}</li>
+    <li>{props.profile.lastName}</li>
+    <li>{props.profile.email}</li>
+    <li>{moment(props.profile.birthDate).format('DD.MM.YYYY')}</li>
+    <li>{`+7 ${props.profile.phone}`}</li>
   </ul>
 );
 

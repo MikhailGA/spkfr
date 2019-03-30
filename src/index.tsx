@@ -30,7 +30,7 @@ ReactDOM.render(
       <Route
         path="/"
         exact={true}
-        render={() => (getToken() ? <Redirect to="/app" /> : <Redirect to="/login" />)} />
+        render={() => (getToken() ? <Redirect to="/app/profile" /> : <Redirect to="/login" />)} />
       <Route path="/login" render={() => <AuthenticationForm restClient={getRestClient()}/>} />
       <Route path="/app" render={() => <App restClient={getRestClient()}/>} />
     </Router>

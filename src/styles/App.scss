@@ -5,10 +5,14 @@
   margin: 0 auto;
 }
 
+.paginationCustom {
+  justify-content: center;
+}
+
 .app {
   display: grid;
   grid-template-columns: 200px auto;
-  grid-template-rows: 30px auto;
+  grid-template-rows: 50px auto;
   grid-template-areas: 
     "user-profile header"
     "side-bar content";
@@ -23,6 +27,9 @@
   .header {
     grid-area: header;
     background-color: lightcyan;
+    display: flex;
+    align-self: center;
+    justify-content: flex-end;
   }
 
   .side-bar {
@@ -32,7 +39,11 @@
 
   .content {
     grid-area: content;
+    position: relative;
     background-color: lightslategray;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }
 }
 
