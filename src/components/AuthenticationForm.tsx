@@ -35,7 +35,7 @@ class AuthenticationForm extends React.Component<PropsType, AuthenticationFormSt
           <h1 className="h3 mb-3 font-weight-normal">Вход</h1>
         </div>
         <FormGroup>
-          <Label for="userPhone">Имя</Label>
+          <Label for="userPhone">Телефон</Label>
           <InputGroup>
             <InputGroupAddon addonType="prepend">+7</InputGroupAddon>
             <Input
