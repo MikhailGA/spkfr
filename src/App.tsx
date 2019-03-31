@@ -47,7 +47,7 @@ class App extends React.Component<AppProps, AppState> {
 
   public state = {
     activePage: 1,
-    itemsPerPage: 2,
+    itemsPerPage: 5,
     totalCount: 0,
   };
 
