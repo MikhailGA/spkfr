@@ -47,18 +47,24 @@ class App extends React.Component<AppProps, AppState> {
   public render() {
     return (
       <div className="app">
-        <div className="grid-item user-profile">
-          {this.state.profile.matches({
-            present: p => `${p.firstName} ${p.lastName}`,
-            empty: () => null,
-          })}
-        </div>
-        <div className="grid-item header">
+        <div className="grid-item header pr-2 ">
           <Button onClick={this.logOut}>Выйти</Button>
         </div>
-        <div className="grid-item side-bar">
+        <div className="grid-item side-bar pl-1 pr-1">
           <nav className="nav flex-column nav-pills nav-fill">
-            <NavLink activeClassName="active" className="nav-item nav-link" to="/app/profile">Профиль</NavLink>
+            <div className="logo">
+              Logo
+            </div>
+            <div className="user-profile">
+              {this.state.profile.matches({
+                present: p =>
+                  <NavLink activeClassName="active" className="nav-item nav-link" to="/app/profile">
+                    {`${p.firstName} ${p.lastName}`}
+                  </NavLink>,
+                empty: () => null,
+              })}
+            </div>
+            {/* <NavLink activeClassName="active" className="nav-item nav-link" to="/app/profile">Профиль</NavLink> */}
             <NavLink activeClassName="active" to="/app/exams" className="nav-item nav-link">Расписание эксзаменов</NavLink>
           </nav>
         </div>

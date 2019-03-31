@@ -28,7 +28,7 @@ interface ExamsProps {
 
 const Exams = (props: ExamsProps) => (
   <>
-    <Table>
+    <Table className="exams-table">
       <thead>
         <tr>
           <th>#</th>

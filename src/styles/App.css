@@ -1,38 +1,51 @@
+body {
+  background-color: lightgray; }
+
 .form-signin {
-  width: 100%;
-  max-width: 330px;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 330px;
   padding: 15px;
-  margin: 0 auto; }
+  margin: 0 auto;
+  background-color: white;
+  border-radius: 5%; }
 
 .paginationCustom {
   justify-content: center; }
 
 .app {
   display: grid;
-  grid-template-columns: 200px auto;
+  grid-template-columns: 225px auto;
   grid-template-rows: 50px auto;
-  grid-template-areas: "user-profile header" "side-bar content";
+  grid-template-areas: "side-bar header" "side-bar content";
   height: 100vh; }
-
-.app .user-profile {
-  grid-area: user-profile;
-  background-color: gray; }
 
 .app .header {
   grid-area: header;
-  background-color: lightcyan;
+  background-color: whitesmoke;
   display: flex;
-  align-self: center;
+  align-items: center;
   justify-content: flex-end; }
 
 .app .side-bar {
   grid-area: side-bar;
-  background-color: lightgray; }
+  background-color: #222938; }
+
+.app .side-bar .logo {
+  height: 50px;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center; }
 
 .app .content {
   grid-area: content;
   position: relative;
-  background-color: lightslategray;
   display: flex;
   flex-direction: column;
   justify-content: space-between; }
+
+.app .content .exams-table tbody tr:hover {
+  background-color: lightcyan; }
