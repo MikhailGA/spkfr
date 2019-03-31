@@ -1,85 +1,46 @@
 import * as React from 'react';
-import { Profile } from '../interfaces';
 import * as moment from 'moment';
-import { InputGroup, FormGroup, Label, Input } from 'reactstrap';
+import {  Label } from 'reactstrap';
+import { connect } from 'react-redux';
+import { iRootState } from '../store';
+
+const mapState = (state: iRootState) => ({
+  profile: state.profile,
+});
+
+type connectedProps = ReturnType<typeof mapState>;
 
 interface UserProfileProps {
-  profile: Profile;
 }
 
-const UserProfile = (props: UserProfileProps) => (
+const UserProfile = (props: UserProfileProps & connectedProps) => (
   <div className="p-3">
-    {/* <li>{props.profile.firstName}</li> */}
-    <FormGroup>
-      <Label for="profile-name">Имя</Label>
-      <InputGroup>
-        <Input
-          className="form-control ml-2"
-          type="text"
-          id="profile-name"
-          name="phone"
-          value={props.profile.firstName}
-          disabled={true}
-        />
-      </InputGroup>
-    </FormGroup>
-    <FormGroup>
-      <Label for="profile-lastName">Фамилия</Label>
-      <InputGroup>
-        <Input
-          className="form-control ml-2"
-          type="text"
-          id="profile-lastName"
-          name="lastName"
-          value={props.profile.lastName}
-          disabled={true}
-        />
-      </InputGroup>
-    </FormGroup>
-    <FormGroup>
-      <Label for="profile-email">Электронная почта</Label>
-      <InputGroup>
-        <Input
-          className="form-control ml-2"
-          type="email"
-          id="profile-email"
-          name="email"
-          value={props.profile.email}
-          disabled={true}
-        />
-      </InputGroup>
-    </FormGroup>
-    <FormGroup>
-      <Label for="profile-birthDate">Дата рождения</Label>
-      <InputGroup>
-        <Input
-          className="form-control ml-2"
-          type="text"
-          id="profile-birthDate"
-          name="birthDate"
-          value={moment(props.profile.birthDate).format('DD.MM.YYYY')}
-          disabled={true}
-        />
-      </InputGroup>
-    </FormGroup>
-    <FormGroup>
-      <Label for="profile-phone">Телефон</Label>
-      <InputGroup>
-        <Input
-          className="form-phone ml-2"
-          type="text"
-          id="profile-phone"
-          name="phone"
-          value={`+7${props.profile.phone}`}
-          disabled={true}
-        />
-      </InputGroup>
-    </FormGroup>
-    {/* <li>{props.profile.lastName}</li>
-    <li>{props.profile.email}</li>
-    <li>{moment(props.profile.birthDate).format('DD.MM.YYYY')}</li>
-    <li>{`+7 ${props.profile.phone}`}</li> */}
+    <Label for="profile-name">Имя</Label>
+      <div
+        className="form-control ml-2 mb-2"
+        id="profile-name"
+      >{props.profile.firstName}</div>
+    <Label for="profile-lastName">Фамилия</Label>
+      <div
+        className="form-control ml-2 mb-2"
+        id="profile-lastName"
+      >{props.profile.lastName}</div>
+    <Label for="profile-email">Электронная почта</Label>
+      <div
+        className="form-control ml-2 mb-2"
+        id="profile-email"
+      >{props.profile.email}</div>
+    <Label for="profile-birthDate">Дата рождения</Label>
+      <div
+        className="form-control ml-2 mb-2"
+        id="profile-birthDate"
+      >{moment(props.profile.birthDate).format('DD.MM.YYYY')}</div>
+    <Label for="profile-phone">Телефон</Label>
+      <div
+        className="form-control ml-2 mb-2"
+        id="profile-phone"
+      >{`+7${props.profile.phone}`}</div>
   </div>
 );
 
-export default UserProfile;
+export default connect(mapState)(UserProfile);

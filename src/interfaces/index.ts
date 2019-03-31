@@ -52,3 +52,5 @@ export interface ExamResponseType {
   pageSize: number;
   total: number;
 }
+
+export type Theme = 'dark' | 'light';

@@ -28,38 +28,38 @@ body {
 
   height: 100vh;
 
-  // .user-profile {
-  //   grid-area: user-profile;
-  //   // background-color: gray;
-  // }
-
   .header {
     grid-area: header;
     background-color: whitesmoke;
     display: flex;
     align-items: center;
     justify-content: flex-end;
+
+    .theme-icon {
+      cursor: pointer;
+    }
   }
 
   .side-bar {
     grid-area: side-bar;
-    background-color: rgb(34, 41, 56);
+    background-color: gainsboro;
     .logo {
       height: 50px;
-      color: white;
+      color: black;
       display: flex;
       justify-content: center;
       align-items: center;
+      background-color: gainsboro;
     }
   }
 
   .content {
     grid-area: content;
     position: relative;
-    // background-color: lightslategray;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    background-color: #fefefe;
 
     .exams-table tbody tr:hover {
       background-color: lightcyan;

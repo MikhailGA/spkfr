@@ -1,8 +1,16 @@
 import * as React from 'react';
 import Table from 'reactstrap/lib/Table';
-import { Exam, ExamStatus } from 'src/interfaces';
+import { ExamStatus } from 'src/interfaces';
 import Pagination from 'react-js-pagination';
+import { connect } from 'react-redux';
+import { iRootState } from '../store';
 import * as moment from 'moment';
+
+const mapState = (state: iRootState) => ({
+  exams: state.exams,
+});
+
+type connectedProps = ReturnType<typeof mapState>;
 
 const statusDescriptionMap = new Map<Partial<ExamStatus>, string>([
   ['isApplying', 'Идет регистрация'],
@@ -19,14 +27,13 @@ const statusDescriptionMap = new Map<Partial<ExamStatus>, string>([
 ]);
 
 interface ExamsProps {
-  exams: Exam[];
   activePage: number;
   itemsPerPage: number;
   totalCount: number;
   handlePageChange: (page: number) => void;
 }
 
-const Exams = (props: ExamsProps) => (
+const Exams = (props: ExamsProps & connectedProps) => (
   <>
     <Table className="exams-table">
       <thead>
@@ -64,7 +71,7 @@ const Exams = (props: ExamsProps) => (
     </>
 );
 
-export default Exams;
+export default connect(mapState)(Exams);
 
 const getNumberingOffset = (curPage: number, itemPerPage: number) =>
   (curPage - 1) * itemPerPage;

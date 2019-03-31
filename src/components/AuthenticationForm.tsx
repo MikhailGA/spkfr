@@ -3,35 +3,21 @@ import { FormGroup, Form, Label, Input, Button, InputGroupAddon } from 'reactstr
 import { withRouter, RouteComponentProps } from 'react-router';
 import { AuthenticationResponseType } from 'src/interfaces';
 import { AxiosInstance } from 'axios';
-import { iRootState, Dispatch } from 'src/store';
-import { connect } from 'react-redux';
 import InputGroup from 'reactstrap/lib/InputGroup';
-
-const mapState = (state: iRootState) => ({
-  token: state.token,
-});
-
-const mapDispatch = (dispatch: Dispatch) => ({
-  setToken: (token: string) => dispatch.token.setToken(token),
-});
-
-type connectedProps = ReturnType<typeof mapState> & ReturnType<typeof mapDispatch>;
-
-interface PathParamsType {
-}
 
 interface SelfProps {
   restClient: AxiosInstance;
 }
 
 // Your component own properties
-type PropsType = RouteComponentProps<PathParamsType> & SelfProps & connectedProps;
+type PropsType = RouteComponentProps & SelfProps;
 
 interface AuthenticationFormState {
   phone: string;
   password: string;
   remember: boolean;
   phoneValid: boolean;
+  passwordValid: boolean;
 }
 
 class AuthenticationForm extends React.Component<PropsType, AuthenticationFormState> {
@@ -40,6 +26,7 @@ class AuthenticationForm extends React.Component<PropsType, AuthenticationFormSt
     password: '',
     remember: false,
     phoneValid: true,
+    passwordValid: true,
   };
   public render() {
     return (
@@ -73,7 +60,8 @@ class AuthenticationForm extends React.Component<PropsType, AuthenticationFormSt
             id="userPassword"
             placeholder="Введите пароль"
             value={this.state.password}
-            onChange={(event: React.FormEvent<HTMLInputElement>) => this.setState({ password: event.currentTarget.value })}
+            invalid={!this.state.passwordValid}
+            onChange={this.handlePasswordInput}
           />
         </FormGroup>
         <Button className="mb-2" block={true}>Логин</Button>
@@ -83,6 +71,13 @@ class AuthenticationForm extends React.Component<PropsType, AuthenticationFormSt
         </Label>
       </Form>
     );
+  }
+
+  private handlePasswordInput = (event: React.FormEvent<HTMLInputElement>) => {
+    this.setState({
+      password: event.currentTarget.value,
+      passwordValid: true,
+    });
   }
 
   private onChangePhone = (event: React.FormEvent<HTMLInputElement>) => {
@@ -97,10 +92,12 @@ class AuthenticationForm extends React.Component<PropsType, AuthenticationFormSt
 
   private logIn = async (event: React.FormEvent) => {
     event.preventDefault();
-    if (!this.state.phoneValid || this.state.password.length === 0) {
-      alert('Вы ввели некорректные данные!');
+    if (!this.state.phoneValid) return;
+    if (this.state.password.length === 0) {
+      this.setState({ passwordValid: false });
       return;
     }
+
     const result = await this.props.restClient.post<AuthenticationResponseType>(
       '/v1/account/login',
       { phone: this.state.phone, password: this.state.password });
@@ -114,8 +111,11 @@ class AuthenticationForm extends React.Component<PropsType, AuthenticationFormSt
       this.props.history.push('/');
       return;
     }
-    alert('Неверный логин или пароль');
+    this.setState({
+      passwordValid: false,
+      phoneValid: false,
+    });
   }
 }
 
-export default withRouter(connect(mapState, mapDispatch)(AuthenticationForm));
+export default withRouter(AuthenticationForm);

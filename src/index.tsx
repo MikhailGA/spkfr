@@ -11,7 +11,6 @@ import Axios from 'axios';
 
 const getToken = () => {
   const token = window.localStorage.getItem('token') || window.sessionStorage.getItem('token');
-  console.log('TCL: getToken -> token', token);
   return token;
 };
 

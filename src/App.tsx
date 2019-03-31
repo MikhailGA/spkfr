@@ -1,15 +1,31 @@
 import * as React from 'react';
 import { AxiosInstance } from 'axios';
-import { Profile, Exam, ExamResponseType } from './interfaces';
-import { Optional } from 'typescript-optional';
+import { Profile, Exam, ExamResponseType, Theme } from './interfaces';
 import { withRouter, RouteComponentProps, Switch, Route } from 'react-router';
 import { NavLink } from 'react-router-dom';
 import UserProfile from './components/UserProfile';
 import Exams from './components/Exams';
 import Button from 'reactstrap/lib/Button';
+import { connect } from 'react-redux';
+import { iRootState, Dispatch } from './store';
 
 // import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles/App.css';
+import ThemeSwitch from './components/ThemeSwitch';
+
+const mapState = (state: iRootState) => ({
+  profile: state.profile,
+  exams: state.exams,
+  theme: state.theme,
+});
+
+const mapDispatch = (dispatch: Dispatch) => ({
+  setProfile: (profile: Profile) => dispatch.profile.setProfile(profile),
+  setExams: (exams: Exam[]) => dispatch.exams.setExams(exams),
+  setTheme: (theme: Theme) => dispatch.theme.setTheme(theme),
+});
+
+type connectedProps = ReturnType<typeof mapState> & ReturnType<typeof mapDispatch>;
 
 interface PathParamsType {
 }
@@ -19,11 +35,9 @@ interface SelfProps {
 }
 
 // Your component own properties
-type AppProps = RouteComponentProps<PathParamsType> & SelfProps;
+type AppProps = RouteComponentProps<PathParamsType> & SelfProps & connectedProps;
 
 interface AppState {
-  profile: Optional<Profile>;
-  exams: Optional<Exam[]>;
   activePage: number;
   itemsPerPage: number;
   totalCount: number;
@@ -32,8 +46,6 @@ interface AppState {
 class App extends React.Component<AppProps, AppState> {
 
   public state = {
-    profile: Optional.empty<Profile>(),
-    exams: Optional.empty<Exam[]>(),
     activePage: 1,
     itemsPerPage: 2,
     totalCount: 0,
@@ -47,7 +59,13 @@ class App extends React.Component<AppProps, AppState> {
   public render() {
     return (
       <div className="app">
+        <ThemeSwitch />
         <div className="grid-item header pr-2 ">
+          <div className="mr-3">
+            {this.props.theme === 'light'
+              ? <div className="theme-icon" onClick={this.handleTheme('dark')}><i className="far fa-sun" aria-hidden="true" /></div>
+              : <div className="theme-icon" onClick={this.handleTheme('light')}><i className="far fa-moon" aria-hidden="true" /></div>}
+          </div>
           <Button onClick={this.logOut}>Выйти</Button>
         </div>
         <div className="grid-item side-bar pl-1 pr-1">
@@ -56,39 +74,33 @@ class App extends React.Component<AppProps, AppState> {
               Logo
             </div>
             <div className="user-profile">
-              {this.state.profile.matches({
-                present: p =>
-                  <NavLink activeClassName="active" className="nav-item nav-link" to="/app/profile">
-                    {`${p.firstName} ${p.lastName}`}
-                  </NavLink>,
-                empty: () => null,
-              })}
+              <NavLink activeClassName="active" className="nav-item nav-link" to="/app/profile">
+                {`${this.props.profile.firstName} ${this.props.profile.lastName}`}
+              </NavLink>
             </div>
-            {/* <NavLink activeClassName="active" className="nav-item nav-link" to="/app/profile">Профиль</NavLink> */}
             <NavLink activeClassName="active" to="/app/exams" className="nav-item nav-link">Расписание эксзаменов</NavLink>
           </nav>
         </div>
         <div className="grid-item content">
           <Switch>
-            <Route path="/app/profile" render={() => this.state.profile.matches({
-              present: p => <UserProfile profile={p}/>,
-              empty: () => null,
-            })} />
-            <Route path="/app/exams" render={() => this.state.exams.matches({
-              present: e =>
+            <Route path="/app/profile" component={UserProfile}/>
+            <Route path="/app/exams"
+              render={() =>
                 <Exams
-                  exams={e}
                   activePage={this.state.activePage}
                   itemsPerPage={this.state.itemsPerPage}
                   totalCount={this.state.totalCount}
                   handlePageChange={this.getExams}
-                />,
-              empty: () => null,
-            })} />
+                />}/>
           </Switch>
         </div>
       </div>
     );
+  }
+
+  private handleTheme = (theme: Theme) => () => {
+    this.props.setTheme(theme);
+    localStorage.setItem('theme', theme);
   }
 
   private getProfile = async () => {
@@ -97,7 +109,7 @@ class App extends React.Component<AppProps, AppState> {
       this.props.history.push('/');
       return;
     }
-    this.setState({ profile: Optional.of(response.data) });
+    this.props.setProfile(response.data);
   }
 
   private getExams = async (page: number) => {
@@ -106,8 +118,8 @@ class App extends React.Component<AppProps, AppState> {
       this.props.history.push('/');
       return;
     }
+    this.props.setExams(response.data.exams);
     this.setState({
-      exams: Optional.of(response.data.exams),
       totalCount: response.data.total,
       activePage: page,
     });
@@ -120,4 +132,4 @@ class App extends React.Component<AppProps, AppState> {
   }
 }
 
-export default withRouter(App);
+export default withRouter(connect(mapState, mapDispatch)(App));

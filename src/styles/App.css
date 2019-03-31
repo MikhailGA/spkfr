@@ -29,23 +29,28 @@ body {
   align-items: center;
   justify-content: flex-end; }
 
+.app .header .theme-icon {
+  cursor: pointer; }
+
 .app .side-bar {
   grid-area: side-bar;
-  background-color: #222938; }
+  background-color: gainsboro; }
 
 .app .side-bar .logo {
   height: 50px;
-  color: white;
+  color: black;
   display: flex;
   justify-content: center;
-  align-items: center; }
+  align-items: center;
+  background-color: gainsboro; }
 
 .app .content {
   grid-area: content;
   position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: space-between; }
+  justify-content: space-between;
+  background-color: #fefefe; }
 
 .app .content .exams-table tbody tr:hover {
   background-color: lightcyan; }

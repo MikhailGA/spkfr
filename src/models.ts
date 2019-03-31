@@ -1,25 +1,23 @@
 import { createModel } from '@rematch/core';
+import { Profile, Exam, Theme } from './interfaces';
 
-export type SharksState = number;
-
-export const sharks = createModel({
-  state: 0,
+export const profile = createModel({
+  state: {} as Profile,
   reducers: {
-    increment: (state: SharksState, payload: number): SharksState => state + payload,
-  },
-  effects: {
-    // TODO: Optional args breaks TypeScript autocomplete (e.g. payload: number = 1)
-    async incrementAsync(payload: number) {
-      this.increment(payload || 1);
-    },
+    setProfile: (state: Profile, payload: Profile): Profile => payload,
   },
 });
 
-export type TokenState = string;
-
-export const token = createModel({
-  state: '',
+export const exams = createModel({
+  state: [],
   reducers: {
-    setToken: (state: TokenState, payload: string): TokenState => payload,
+    setExams: (state: Exam[], payload: Exam[]): Exam[] => payload,
+  },
+});
+
+export const theme = createModel({
+  state: localStorage.getItem('theme') ? localStorage.getItem('theme') : 'light',
+  reducers: {
+    setTheme: (state: Theme, payload: Theme): Theme => payload,
   },
 });
