@@ -32,7 +32,7 @@ class AuthenticationForm extends React.Component<PropsType, AuthenticationFormSt
     return (
       <Form onSubmit={this.logIn} className="form-signin">
         <div className="text-center mb-4">
-          <h1 className="h3 mb-3 font-weight-normal">Please sign in</h1>
+          <h1 className="h3 mb-3 font-weight-normal">Вход</h1>
         </div>
         <FormGroup>
           <Label for="userPhone">Имя</Label>
