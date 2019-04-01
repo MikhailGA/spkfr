@@ -21,36 +21,30 @@ body {
   grid-template-rows: 50px auto;
   grid-template-areas: "side-bar header" "side-bar content";
   height: 100vh; }
-
-.app .header {
-  grid-area: header;
-  background-color: whitesmoke;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end; }
-
-.app .header .theme-icon {
-  cursor: pointer; }
-
-.app .side-bar {
-  grid-area: side-bar;
-  background-color: gainsboro; }
-
-.app .side-bar .logo {
-  height: 50px;
-  color: black;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: gainsboro; }
-
-.app .content {
-  grid-area: content;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  background-color: #fefefe; }
-
-.app .content .exams-table tbody tr:hover {
-  background-color: lightcyan; }
+  .app .header {
+    grid-area: header;
+    background-color: whitesmoke;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; }
+    .app .header .theme-icon {
+      cursor: pointer; }
+  .app .side-bar {
+    grid-area: side-bar;
+    background-color: gainsboro; }
+    .app .side-bar .logo {
+      height: 50px;
+      color: black;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: gainsboro; }
+  .app .content {
+    grid-area: content;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: #fefefe; }
+    .app .content .exams-table tbody tr:hover {
+      background-color: lightcyan; }

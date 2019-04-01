@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Table from 'reactstrap/lib/Table';
+import { Table } from 'reactstrap';
 import { ExamStatus } from 'src/interfaces';
 import Pagination from 'react-js-pagination';
 import { connect } from 'react-redux';

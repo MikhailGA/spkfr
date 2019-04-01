@@ -15,8 +15,10 @@ export const exams = createModel({
   },
 });
 
+const themeInitState = localStorage.getItem('theme');
+
 export const theme = createModel({
-  state: localStorage.getItem('theme') ? localStorage.getItem('theme') : 'light',
+  state: themeInitState ? themeInitState : 'light',
   reducers: {
     setTheme: (state: Theme, payload: Theme): Theme => payload,
   },

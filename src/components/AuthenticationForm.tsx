@@ -1,9 +1,8 @@
 import * as React from 'react';
-import { FormGroup, Form, Label, Input, Button, InputGroupAddon } from 'reactstrap';
+import { FormGroup, Form, Label, Input, Button, InputGroupAddon, InputGroup } from 'reactstrap';
 import { withRouter, RouteComponentProps } from 'react-router';
 import { AuthenticationResponseType } from 'src/interfaces';
 import { AxiosInstance } from 'axios';
-import InputGroup from 'reactstrap/lib/InputGroup';
 
 interface SelfProps {
   restClient: AxiosInstance;

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as moment from 'moment';
-import {  Label } from 'reactstrap';
+import { Label } from 'reactstrap';
 import { connect } from 'react-redux';
 import { iRootState } from '../store';
 

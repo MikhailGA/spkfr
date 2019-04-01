@@ -1,9 +1,9 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import App from './App';
 import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { store } from './store';
+import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import AuthenticationForm from './components/AuthenticationForm';
 
